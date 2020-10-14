@@ -14,6 +14,10 @@ class LoginController extends Controller
         return view('login');  
     }
 
+    public function getHome() {
+        return view('home.index');  
+    }
+
     public function postLogin(request $request)
     {
         //Validasi inputan dan set pesan error
@@ -46,7 +50,7 @@ class LoginController extends Controller
                 Session::put('username', $checkUser->nama_depan);
                 Session::put('login', TRUE);
 
-                return view('/home');
+                return view('home.index');
 
             } else {
                 //insert error value ke dalam session status dan return ke view form login
@@ -56,5 +60,11 @@ class LoginController extends Controller
             //insert error value ke dalam session status dan return ke view form login
             return redirect('/')->with('status', 'No Telphone Salah!');
         }
+    }
+
+    public function Logout() {
+        //Clear Session
+        session::flush();
+        return redirect('/');
     }
 }

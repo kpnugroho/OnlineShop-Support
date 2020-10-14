@@ -22,6 +22,10 @@ use App\Http\middleware\CheckSessionBlockLogin;
 Route::get('/', 'LoginController@getLogin')->middleware(CheckSessionBlockLogin::class);
 // Proses login system
 Route::post('/home', 'LoginController@postLogin');
+// Untuk redirect ke home melalui URL
+Route::get('/home', 'LoginController@getHome');
+// Untuk redirect ke home melalui URL
+Route::get('/logout', 'LoginController@logout');
 // View register user
 Route::get('/user/register', 'UserController@index')->middleware(CheckSessionBlockLogin::class);
 // Store register user
