@@ -3,11 +3,11 @@
 <head>
 	<title>OS Support - Login</title>
 	<link rel="stylesheet" href="{{ asset('/css/bootstrap.min.css') }}">
-	<link rel="stylesheet" href="{{ asset('/css/style.css') }}">
+	<link rel="stylesheet" href="{{ asset('custom//css/style.css') }}">
 
 </head>
-<body>
-	<form action="/home" method="post">
+<body class="front-background">
+	<form action="{{route('Login_Post')}}" method="post">
 		@csrf
 		<div class="container">
 			<div class="row">
@@ -32,10 +32,10 @@
 						<div class="alert alert-danger">{{ session('status') }}</div>
 					@endif
 
-					<button type="submit" name="submit" id="submit" class="btn btn-danger mt-2">LOGIN</button>
+					<button type="submit" name="submit" id="submit" class="btn btn-primary mt-2">LOGIN</button>
 
                     <div class="register">
-                        <a href="/user/register">Create an Account</a>
+                        <a href="{{route('User_Registration')}}">Create an Account</a>
 					</div>
 
 					<div class="copyright">
@@ -45,7 +45,7 @@
 			</div>
 		</div>
 	</form>
-<script src="{{ asset('/js/jquery-3.5.1.min.js') }}"></script>
+<script src="{{ asset('/custom/js/jquery-3.5.1.min.js') }}"></script>
 <script src="{{ asset('/js/bootstrap.min.js') }}"></script>
 
 </body>

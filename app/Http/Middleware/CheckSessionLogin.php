@@ -16,7 +16,7 @@ class CheckSessionLogin
      */
     public function handle(Request $request, Closure $next)
     {
-        if(! $request->session()->has('login')) {
+        if(! Session()->has('login')) {
             return redirect('/')->with('status', 'Silahkan Login Dahulu!');
         }
 

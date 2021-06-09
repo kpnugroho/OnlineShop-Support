@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\support\facades\session;
 use Illuminate\support\facades\Hash;
 use Illuminate\support\facades\DB;
+use Illuminate\Support\Facades\Validator;
 use App\tblUser;
 
 class UserController extends Controller
@@ -39,26 +40,36 @@ class UserController extends Controller
     public function store(Request $request)
     {
         //Validasi inputan dan set pesan error
-        $request->validate([
-            'namaDepan'=>'required',
-            'namaBelakang'=>'required',
-            'noTelp'=>'required|numeric',
-            'noWa'=>'required|numeric',
-            'email'=>'required|email',
-            'password'=>'required|min:6',
-        ],
-        [
-            'namaDepan.required' => 'Nama Depan Masih Kosong!',
-            'namaBelakang.required'  => 'Nama Belakang Masih Kosong!',
-            'noTelp.required'  => 'No Telp Masih Kosong!',
-            'noTelp.numeric'  => 'No Telp Harus Angka!',
-            'noWa.required'  => 'No Whatsapp Masih Kosong!',
-            'noWa.numeric'  => 'No Whatsapp Harus Angka!',
-            'email.required'  => 'Email Masih Kosong!',
-            'email.email'  => 'Email Tidak Valid!',
-            'password.required'  => 'Password Masih Kosong!',
-            'password.min'  => 'Password Minimal 6 Character!'
-        ]);
+        $input = $request->all();
+        $validator = \Validator::make(
+            $request->all(), 
+                [
+                    'namaDepan'=>'required',
+                    'namaBelakang'=>'required',
+                    'noTelp'=>'required|numeric',
+                    'noWa'=>'required|numeric',
+                    'email'=>'required|email',
+                    'password'=>'required|min:6',
+                ],
+                [
+                    'namaDepan.required' => 'Nama Depan Masih Kosong!',
+                    'namaBelakang.required'  => 'Nama Belakang Masih Kosong!',
+                    'noTelp.required'  => 'No Telp Masih Kosong!',
+                    'noTelp.numeric'  => 'No Telp Harus Angka!',
+                    'noWa.required'  => 'No Whatsapp Masih Kosong!',
+                    'noWa.numeric'  => 'No Whatsapp Harus Angka!',
+                    'email.required'  => 'Email Masih Kosong!',
+                    'email.email'  => 'Email Tidak Valid!',
+                    'password.required'  => 'Password Masih Kosong!',
+                    'password.min'  => 'Password Minimal 6 Character!'
+                ]
+        );
+
+        if ($validator->fails()) {
+                  return redirect()->back()
+                                  ->withErrors($validator)
+                                  ->withInput($input);
+        }
 
         //parameter inputan ditampung ke dalam varibale
         $noTelp = $request->noTelp;
@@ -114,15 +125,15 @@ class UserController extends Controller
 
                 } else {
                     //insert error value ke dalam session status dan return ke view form login
-                    return redirect('/user/register')->with('status', 'Email Sudah Terdaftar!');
+                    return redirect('/user/register')->with('status', 'Email Sudah Terdaftar!')->withInput($input);
                 }   
             } else {
                 //insert error value ke dalam session status dan return ke view form login
-                return redirect('/user/register')->with('status', 'No Whatsapp Sudah Terdaftar!');
+                return redirect('/user/register')->with('status', 'No Whatsapp Sudah Terdaftar!')->withInput($input);
             }         
         } else {
             //insert error value ke dalam session status dan return ke view form login
-            return redirect('/user/register')->with('status', 'No Telphone Sudah Terdaftar!');
+            return redirect('/user/register')->with('status', 'No Telphone Sudah Terdaftar!')->withInput($input);
         }
     }
 
@@ -145,7 +156,9 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $model = DB::table('tblUser')->where('user_id', $id)->first();
+        Session::put('menuActive', 'change_password');
+        return view('user.edit', ['model' => $model]);
     }
 
     /**
@@ -157,7 +170,60 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //Validasi inputan dan set pesan error
+        $validator = Validator::make($request->all(), [
+            'email'                 =>'required',
+            'no_telp'               =>'required',
+            'password_lama'         =>'required|min:6',
+            'password_baru'         =>'required|min:6',
+            'password_confirmation' =>'required|min:6|same:password_baru'
+        ],
+        [
+            'email.required'                => 'Email Masih Kosong!',
+            'no_telp.required'              => 'No Telphone Masih Kosong!',
+            'password_lama.required'        => 'Password Lama Masih Kosong!',
+            'password_lama.min'             => 'Password Lama Minimal 6 Character!',
+            'password_baru.required'        => 'Password Baru Masih Kosong!',
+            'password_baru.min'             => 'Password Baru Minimal 6 Character!',
+            'password_confirmation.required'=> 'Konfirmasi Password Baru Masih Kosong!',
+            'password_confirmation.min'     => 'Konfirmasi Password Baru Minimal 6 Character!',
+            'password_confirmation.same'    => 'Password Konfirmasi dan Password Baru Harus Sama!'
+        ]); 
+
+        if($validator->fails()) {
+            return response()->json(['errors'=>$validator->errors()], 404);
+        }
+
+        //Check no telp ke database
+        $checkPassOld = DB::table('tbluser')
+            ->where('user_id', $id)
+            ->first();
+
+        // dd($checkPassOld->password. "   -   " .Hash::make($request->password_baru));
+
+        if(Hash::check($request->password_lama, $checkPassOld->password)) {
+            $message = "";
+            DB::beginTransaction();
+
+            try {
+                DB::table('tblUser')
+                            ->where('user_id', $id)
+                            ->update([
+                                'password' => Hash::make($request->password_baru),
+                                'update_on' => now()
+                            ]);
+
+                DB::commit();
+                $message = "Perubahan Password Berhasil!";
+            } catch (Exception $e) {
+                DB::rollback();
+                $message = "Perubahan Password Gagal, Silahkan Coba Lagi!";
+            }
+
+            return redirect('/user/'.$id.'/edit')->with('status', $message);
+        } else {
+            return redirect('/user/'.$id.'/edit')->with('status', 'Password Lama Tidak Sesuai!')->withInput($input);
+        }
     }
 
     /**

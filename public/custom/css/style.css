@@ -1,0 +1,233 @@
+.btn {
+    width: 100px;
+    color: white;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.btn-primary {
+    background-color: #008CBA;
+}
+
+.btn-primary:hover {
+    background-color:gainsboro;
+    border-color: #008CBA;
+}
+
+.btn:hover {
+    color: black;
+}
+
+.btn-sm {
+    width: 100%;
+    color: white;
+    font-size: 11px;
+    text-transform: uppercase;
+    margin-left:1px;
+    margin-right:1px;
+}
+
+.row-button-nav {
+    background-color: #008CBA;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    max-width: 100%;
+}
+
+.button-nav {
+    background-color: #008CBA;
+    border: none;
+    color: white;
+    padding: 8px 15px;
+    margin-right: -5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+  }
+
+  .button-nav:hover{
+    background-color:white;
+    color: black;
+  }
+
+  .button-nav-disabled{
+    background-color: #008CBA;
+    border: none;
+    color: black;
+    padding: 8px 15px;
+    margin-right: -5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+  }
+
+  .nav-active {
+    background-color:white;
+    color: black;
+  }
+
+  .button-nav i {
+    margin-right: 6px;
+  }
+
+  /* pagination */
+  .page-item.active .page-link {
+    background-color: #008CBA;
+    border-color: #008CBA;
+}
+
+.card {
+    box-shadow: unset;
+    /* border-top: 3px whitesmoke solid; */
+}
+
+/*------------------------------------------------------------*/
+/*FORM LOGIN*/
+.front-background {
+    /*background-color: #eaeaea;*/
+    /* background-color: whitesmoke; */
+    font-family: sans-serif;
+    background-image: url('/images/background.jpg');
+    /* Full height */
+    height: 100%;
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#form-login { 
+	margin: 55px auto;
+    background-color: white;
+    opacity: 0.9;
+    /* box-shadow: 2px 2px #888888; */
+	padding: 50px 70px; 
+    border-radius: 20px;
+}
+
+#form-login h5 {
+	text-align: center;
+	margin-bottom: 40px;
+	margin-top: 10px;
+    color: black;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+#form-login button {
+    width: 100%;
+    border-radius: 25px;
+}
+
+#form-login label {
+	color: black;
+	margin-top: 10px;
+}
+
+#form-login input {
+    margin-top: 10px;
+    border-radius: 25px;
+    background-color: #e6e6e6;
+    text-align: center;
+}
+
+#form-login img {
+    border-radius: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+#form-login .register {
+    font-style: italic;
+    font-size: 15px;
+    text-align: center;
+    margin-top: 5px;
+}
+
+#form-login .invalid-feedback {
+    text-align: center;
+}
+
+#form-login .alert {
+    text-align: center;
+}
+
+.copyright {
+	text-align: center;
+	margin-top: 30px;
+	font-size: 14px;
+}
+
+/*------------------------------------------------------------*/
+/*FORM HOME*/
+.backgroud-home { 
+	/*background-color: #eaeaea;*/
+    /* background-color: whitesmoke; */
+    background-image: url('/images/background-home.png');
+    /* Full height */
+    height: 82vh;
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/*------------------------------------------------------------*/
+/*FORM REGISTER USER*/
+.register { 
+	margin-top: -30px;
+}
+
+/*------------------------------------------------------------*/
+/*FORM MAIN*/
+/* Setting Size Font */
+label:not(.form-check-label):not(.custom-file-label) {
+    font-weight: 100;
+}
+
+/* Replace background */
+.content-wrapper {
+    background-color: white;
+}
+
+.content-wrapper form{
+    background-color: white;
+}
+
+.main-footer {
+    background-color: whitesmoke;
+    padding: 8px;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+thead {
+    background-color: gainsboro;
+}
+
+/* For button create */
+.div-btn-create {
+    float: right;
+    margin-bottom: -10px;
+}
+
+/* For responsive element */
+@media screen and (max-width: 800px) {
+    .btn-sm {
+        width: 40%;
+    }
+
+    .div-btn-create {
+        float: none;
+        margin-bottom: -10px;
+    }
+    /* pagination table */
+    /* .dataTables_paginate  {
+        text-align: center;
+    } */
+}
